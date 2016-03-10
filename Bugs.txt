@@ -1,0 +1,10 @@
+This is a list of known bugs in this RPAL interpreter.
+
+1. The printing of string variables on windows does not sanitize the string. Work perfectly on linux.
+   (x,'Hi\nPLP')
+   	Outputs <STR:'Hi\nPLP'>   on linux
+   	Outputs <STR:'Hi
+   	PLP'>			  on windows
+   	
+   	
+
