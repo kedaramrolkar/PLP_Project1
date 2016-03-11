@@ -68,5 +68,17 @@ void treePrint(string fileLocation, bool debugMode)     // Produce and print the
   RPALparser *rp=new RPALparser(fileLocation, debugMode);
   StackHelper *sp=rp->sp;  
   rp->startParsing();
-  sp->printTree();
+  if(rp->token->nextToken!="")
+  {
+    cout<<"Could not parse correctly. Input has some elements remaining";
+    exit(1);
+  }
+
+  Node* t=sp->pop();
+  if((sp->pop())!=NULL)
+  {
+    cout<<"Could not parse correctly. Stack has more than one tree remaining";
+  }
+  else
+    t->printTree("");
 }

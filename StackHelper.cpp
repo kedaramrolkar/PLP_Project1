@@ -22,8 +22,6 @@ class StackHelper
   
   void print(){    stack->print();  }
   
-  void printTree(){    stack->printTree();  }
-  
   void buildTree(string s, int ncount)    // BuildTree command
   {
     if(debugMode)

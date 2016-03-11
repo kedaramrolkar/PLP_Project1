@@ -57,15 +57,6 @@ class Stack
       cout<<temp->node->data<<",";
       temp=temp->nextNode;
     }
-  }      
-  
-  void printTree()    // print the tree for the top
-  {
-    StackNode *temp=top;
-    if(temp!=NULL)
-    {
-      temp->node->printTree("");  
-    }
-  }      
+  }           
 };
 
