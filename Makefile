@@ -1,5 +1,6 @@
 all:
-	g++ Node.cpp Stack.cpp StackHelper.cpp Token.cpp LexicalAnalyser.cpp parser.cpp main.cpp -o p1
+	g++ -std=c++0x main.cpp -o p2
 
 cl:
-	rm -f *.0 p1
+	rm -f *.0 p2
+

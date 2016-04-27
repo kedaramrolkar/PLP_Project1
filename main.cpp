@@ -4,14 +4,22 @@
 #include <string>
 #include <stdexcept>
 #include "parser.cpp"
+#include "ControlStructureMaker.cpp"
+#include "CSEMachine.cpp"
 using namespace std;
 
 void listInput(string fileLocation);
-void treePrint(string fileLocation, bool debugMode);
+void treePrint(string fileLocation, bool debugMode, bool treePrint);
 
 int main(int argc, char** argv) {  
 
-  if (argc <= 2 || argc>4)  exit(1); //only allow 3 or 4 parameters (fn,switch+,fileLocation)
+  if (argc <= 1 || argc>4)  exit(1); //only allow 3 or 4 parameters (fn,switch+,fileLocation)
+
+  if(argc==2){
+    string fileLocation=argv[1];
+    treePrint(fileLocation,false,false);
+    return 0;
+  }
 
   string switch1=argv[1];	
   if(argc==3){
@@ -22,7 +30,7 @@ int main(int argc, char** argv) {
     }
     else if(switch1=="-ast")   // if 3 parameters with -ast switch -> Print Tree and return
     {
-      treePrint(fileLocation,false);
+      treePrint(fileLocation,false,true);
     }
     return 0;
   }
@@ -40,7 +48,7 @@ int main(int argc, char** argv) {
     debugMode=true;
   }
   if(switch1=="-ast" || switch2=="-ast"){
-    treePrint(fileLocation,debugMode);
+    treePrint(fileLocation,debugMode,true);
   }
   else
     exit(1);
@@ -63,7 +71,7 @@ void listInput(string fileLocation)   // List the input from the file
   }
 }
 
-void treePrint(string fileLocation, bool debugMode)     // Produce and print the AST for the input
+void treePrint(string fileLocation, bool debugMode, bool treePrint)     // Produce and print the AST for the input
 {
   RPALparser *rp=new RPALparser(fileLocation, debugMode);
   StackHelper *sp=rp->sp;  
@@ -79,6 +87,16 @@ void treePrint(string fileLocation, bool debugMode)     // Produce and print the
   {
     cout<<"Could not parse correctly. Stack has more than one tree remaining";
   }
-  else
-    t->printTree("");
+  else{
+    if(treePrint)
+      t->printTree("");
+    else{
+      t=t->standardizeNode();
+      //t->printTree("");
+      ControlStructureMaker *csMaker= new ControlStructureMaker(t);
+      //csMaker->print();
+      CSEMachine *cse=new CSEMachine(csMaker->ls);
+      cse->print();
+    }  
+  }
 }
