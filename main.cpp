@@ -90,13 +90,11 @@ void treePrint(string fileLocation, bool debugMode, bool treePrint)     // Produ
   else{
     if(treePrint)
       t->printTree("");
-    else{
-      t=t->standardizeNode();
-      //t->printTree("");
-      ControlStructureMaker *csMaker= new ControlStructureMaker(t);
-      //csMaker->print();
-      CSEMachine *cse=new CSEMachine(csMaker->ls);
-      cse->print();
-    }  
+    t=t->standardizeNode();
+    ControlStructureMaker *csMaker= new ControlStructureMaker(t);
+    if(debugMode)
+      csMaker->print();
+    CSEMachine *cse=new CSEMachine(csMaker->ls, debugMode);
+    cout<<endl; 
   }
 }

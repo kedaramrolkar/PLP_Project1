@@ -22,8 +22,8 @@ class CSEMachine
   unordered_map <int, Environment*> hmenv;
   bool debugMode;
 
-  CSEMachine(vector<string> l){
-    debugMode=false;
+  CSEMachine(vector<string> l, bool dm){
+    debugMode=dm;
     ls=l;	tk=new Tokenizer();
     currEnvCount=-1;
     currEnvironment=NULL;	currEnvName="";
@@ -34,7 +34,7 @@ class CSEMachine
   	currEnvCount++;
   	if(debugMode)
       cout<<" currEnvCount: "<<currEnvCount<<endl;
-  	currEnvironment = new Environment("< e"+to_string(currEnvCount)+" >",parent);
+  	currEnvironment = new Environment("< e"+to_string(currEnvCount)+" >",parent, debugMode);
   	if(debugMode)
       cout<<" currEnvironment: "<<currEnvironment->name<<endl;
 
@@ -275,7 +275,8 @@ class CSEMachine
     			string value=tk->grabTopToken(false);
     			
     			string result = applyDelayedFunc(function,value);
-	   			tk->addToStack(false, result);
+	   			if(result!="")
+            tk->addToStack(false, result);
    			}
     	}
     	else if(tk->isTokenTau(s))
@@ -314,10 +315,7 @@ class CSEMachine
     }
   }  
 
-  void print(){
-  	if(debugMode)
-      cout<<"printing ans:"<<endl;
-  	string value=tk->accessTopToken(false);
+  string processPrint(string value){
   	if(debugMode)
       cout<<"value:"+value<<endl;
   	if(value.at(0)=='\'' && value.at(value.length()-1)=='\'')
@@ -331,7 +329,7 @@ class CSEMachine
     else if(tk->isTokenLambda(value))
       value=processLambda(value);
     //printf("%s",value);
-  	cout<<value<<endl;
+  	return value;
   }
 
   string processString(string str){
@@ -372,7 +370,7 @@ class CSEMachine
 
   string processLambda(string s){
     //cout<<"processing tuple: "<<endl;
-    string ans="[lambda Closure: ";
+    string ans="[lambda closure: ";
     string trand=s;
     vector<string> x = tk->split(trand, ' ');
     ans+=x.at(3)+": "+x.at(2);
@@ -545,9 +543,8 @@ class CSEMachine
   	}
   	else if(function=="Print")
   	{
-  		//if(value.at(0)=='\'' && value.at(value.length()-1)=='\'')
-  			//return value.substr(1,value.length()-2);
-    	return value;
+  		cout<<processPrint(value);
+    	return "<Dummy>";
   	}
   	else if(function=="Stern")
   	{
@@ -572,6 +569,22 @@ class CSEMachine
     else if(function=="Isstring")
   	{
   		return (value.at(0)=='\'' && value.at(value.length()-1)=='\'')?"true":"false";
+    }
+    else if(function=="Istruthvalue")
+    {
+      return (value=="true" || value=="false")?"true":"false";
+    }
+    else if(function=="ItoS")
+    {
+      try{
+        int x=stoi(value);
+        value="'"+to_string(x)+"'";
+      }
+      catch(exception& e){
+        cout<<"wrong parameter to ItoS function";
+        exit(1);
+      }
+      return value;
     }
     else if(function=="Isinteger")
     {

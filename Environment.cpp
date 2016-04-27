@@ -15,12 +15,12 @@ class Environment
   unordered_map <string, string> *hm;
   bool debugMode;
 
-  Environment(string n, Environment *p){
-    debugMode=false;
+  Environment(string n, Environment *p, bool dm){
+    debugMode=dm;
     name=n;
     parent=p;child=NULL;sibling=NULL;
     hm=new unordered_map<string,string>();
-	if(parent!=NULL)
+	  if(parent!=NULL)
 	    p->addChild(this);
   }
 

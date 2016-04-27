@@ -47,7 +47,6 @@ class ControlStructureMaker
   			s= "< lambdaComma "+ to_string(t->child->childCount()) +" "+ss+" " + createControlStructures(t->child->child);
 
   		s+= " > ";
-  		//cout<<"pushed "+s+" "<<index<<endl;
   		if(t->sibling!=NULL)
       		s+=" "+createControlStructures(t->sibling);
   		return s;
@@ -94,7 +93,6 @@ class ControlStructureMaker
   	else
   		s=t->data;
 
-  	//cout<<"pushed "+s+" "<<index<<endl;
     if(t->child!=NULL){
       s= s+" "+ createControlStructures(t->child);
   	}

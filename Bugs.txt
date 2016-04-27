@@ -1,10 +1,10 @@
 This is a list of known bugs in this RPAL interpreter.
 
-1. The printing of string variables on windows does not sanitize the string. Work perfectly on linux.
-   (x,'Hi\nPLP')
-   	Outputs <STR:'Hi\nPLP'>   on linux
-   	Outputs <STR:'Hi
-   	PLP'>			  on windows
+1. The program does not run correctly for 6 test files i.e.	
+	Treepicture, picture, tiny, trees, clean and tiny.1
+
+2. There may be some inbuilt RPAL functions which are not 
+	recognized by interpreter.
    	
    	
 
